@@ -2,12 +2,12 @@ import React from 'react';
 import './modalhelp.scss';
 
 const ModalHelp = ({ open, setOpen }) => (
-    <div className={`overlay animated ${open ? 'show' : ''}`}>
-        <div className="modal">
+    <div className={`overlay animated ${open ? 'show' : ''}`} onClick={() => setOpen(false)}>
+        <div className="modal" onClick={e => e.stopPropagation()} >
             <div className='headWrapper'>
                 <div className='headerTDiv'>yalp ot woh</div>
                 <div className='headerIDiv'>
-                    <i class="fa-regular fa-circle-xmark" onClick={() => setOpen(false)}></i>
+                    <i class="fa fa-times" aria-hidden="true" onClick={() => setOpen(false)}></i>
                 </div>
             </div>
             <span className='helpSpan'><br />.seirt 6 ni drow neddih eht sseug
