@@ -20,5 +20,4 @@ function Header() {
         </div >)
 };
 
-// propTypes
 export default Header;

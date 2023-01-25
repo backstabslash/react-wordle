@@ -19,6 +19,7 @@ function Row({ id, values }) {
 };
 
 Row.propTypes = {
+    id: PropTypes.number,
     lastLetter: PropTypes.string,
 }
 

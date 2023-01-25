@@ -15,27 +15,30 @@ function Board({ onClick }) {
                     />
                 ))}
                 </div>
-                <div className='row'> {['l', 'k', 'j', 'h', 'g', 'f', 'd', 's', 'a'].map((key) => (
+                <div className='row'> {['l', 'k', 'j', 'h', 'g', 'f', 'd', 's', 'a', '⌫'].map((key) => (
                     <Key
                         value={key}
                         key={key}
                         onClick={onClick}
                     />
                 ))}
-                    <div className='key'> &#9003;</div>
                 </div>
-                <div className='row'> {['m', 'n', 'b', 'v', 'c', 'x', 'z'].map((key) => (
+                <div className='row'> {['m', 'n', 'b', 'v', 'c', 'x', 'z', '⏎'].map((key) => (
                     <Key
                         value={key}
                         key={key}
                         onClick={onClick}
                     />
                 ))}
-                    <div className='keyEnter'>&#9166; </div>
                 </div>
             </div>
         </div>
     )
 };
+
+Board.propTypes = {
+    onClick: PropTypes.func,
+}
+
 
 export default Board;

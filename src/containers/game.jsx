@@ -12,15 +12,27 @@ class Game extends Component {
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' ']
-        ]
+        ],
+        curRow: 0,
     };
 
     onKeyClick = ({ value }) => {
         const { letters } = this.state;
-        const posChange = letters[0].indexOf(' ');
-        letters[0][posChange] = value;
-
-        this.setState({ letters: letters });
+        let { curRow } = this.state;
+        if (value === '⏎') {
+            if (!letters[curRow].includes(' ') && curRow < 5) curRow++;
+        }
+        else if (value === '⌫') {
+            let posChange;
+            if (letters[curRow].includes(' ')) posChange = letters[curRow].indexOf(' ') - 1;
+            else posChange = 4;
+            letters[curRow][posChange] = ' ';
+        }
+        else {
+            const posChange = letters[curRow].indexOf(' ');
+            letters[curRow][posChange] = value;
+        }
+        this.setState({ letters: letters, curRow: curRow });
     }
 
     render() {

@@ -24,3 +24,30 @@
 .key:active {
     font-size: 30px;
 }
+
+.keyEnter {
+    border: 1px solid #8FB996;
+    background-color: #0F1A11;
+    border-radius: 5%;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    line-height: 40px;
+    text-transform: uppercase;
+    margin: 0 5px 0 0;
+    font-family: "Lora";
+    font-size: 24px;
+    color: #8FB996;
+    font-weight: 600;
+    width: 115px;
+}
+
+.keyEnter:hover {
+    background-color: #1E3322;
+}
+
+.keyEnter:active {
+    font-size: 30px;
+}

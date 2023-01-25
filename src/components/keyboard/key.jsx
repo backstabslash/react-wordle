@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import './key.css';
 
 function Key({ value, onClick }) {
     return (
-        <div className='key' onClick={() => { onClick({ value }) }}> {value}</div >
+        <>
+            {value !== '⏎' && <div className='key' onClick={() => { onClick({ value }) }}> {value}</div >}
+            {value === '⏎' && <div className='keyEnter' onClick={() => { onClick({ value }) }}> {value}</div >}
+
+        </>
     )
 };
 
