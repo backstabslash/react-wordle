@@ -7,7 +7,7 @@ function Board({ onClick }) {
     return (
         <div className="board">
             <div className='keyboardArea'>
-                <div className='row'> {['p', 'o', 'i', 'u', 'y', 't', 'r', 'e', 'w', 'q'].map((key) => (
+                <div className='row'> {['P', 'O', 'I', 'U', 'Y', 'T', 'R', 'E', 'W', 'Q'].map((key) => (
                     <Key
                         value={key}
                         key={key}
@@ -15,7 +15,7 @@ function Board({ onClick }) {
                     />
                 ))}
                 </div>
-                <div className='row'> {['l', 'k', 'j', 'h', 'g', 'f', 'd', 's', 'a', '⌫'].map((key) => (
+                <div className='row'> {['L', 'K', 'J', 'H', 'G', 'F', 'D', 'S', 'A', '⌫'].map((key) => (
                     <Key
                         value={key}
                         key={key}
@@ -23,7 +23,7 @@ function Board({ onClick }) {
                     />
                 ))}
                 </div>
-                <div className='row'> {['m', 'n', 'b', 'v', 'c', 'x', 'z', '⏎'].map((key) => (
+                <div className='row'> {['M', 'N', 'B', 'V', 'C', 'X', 'Z', '⏎'].map((key) => (
                     <Key
                         value={key}
                         key={key}
