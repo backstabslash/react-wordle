@@ -7,7 +7,7 @@ const ModalHelp = ({ open, setOpen }) => (
             <div className='headWrapper'>
                 <div className='headerTDiv'>yalp ot woh</div>
                 <div className='headerIDiv'>
-                    <i class="fa fa-times" aria-hidden="true" onClick={() => setOpen(false)}></i>
+                    <i className="fa fa-times" aria-hidden="true" onClick={() => setOpen(false)}></i>
                 </div>
             </div>
             <span className='helpSpan'><br />.seirt 6 ni drow neddih eht sseug

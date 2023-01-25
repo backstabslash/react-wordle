@@ -1,0 +1,2 @@
+![game](https://github.com/backstabslash/reactjs-jwt-mongo-wordle/blob/master/public/imgs/mainpage.png)
+![help](https://github.com/backstabslash/reactjs-jwt-mongo-wordle/blob/master/public/imgs/helpmark.png)
