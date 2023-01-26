@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import Row from './row';
 import './grid.css';
 
-function Grid({ array }) {
+function Grid({ letters, colors }) {
     let i = 0;
     return (
         <div className="grid">
             <div className='gameArea'>
-                {[...array].map((key) => (
+                {[...letters].map((key) => (
                     <Row
                         id={i}
                         key={i}
-                        values={array[i++]}
+                        values={letters[i]}
+                        colors={colors[i++]}
                     />
                 ))}
 
@@ -22,7 +23,7 @@ function Grid({ array }) {
 };
 
 Grid.propTypes = {
-    array: PropTypes.array,
+    letters: PropTypes.array,
 }
 
 export default Grid;

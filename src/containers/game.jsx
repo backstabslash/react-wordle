@@ -4,35 +4,38 @@ import Grid from '../components/mainarea/grid';
 import Board from '../components/keyboard/board'
 
 const allowedKeys = [
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-    "Backspace",
-    "Enter",
+    "A", 'a',
+    "B", 'b',
+    "C", 'c',
+    "D", 'd',
+    "E", 'e',
+    "F", 'f',
+    "G", 'g',
+    "H", 'h',
+    "I", 'i',
+    "J", 'j',
+    "K", 'k',
+    "L", 'l',
+    "M", 'm',
+    "N", 'n',
+    "O", 'o',
+    "P", 'p',
+    "Q", 'q',
+    "R", 'r',
+    "S", 's',
+    "T", 't',
+    "U", 'u',
+    "V", 'v',
+    "W", 'w',
+    "X", 'x',
+    "Y", 'y',
+    "Z", 'z',
+    "Backspace", "Enter",
 ];
+
+// const wordPool = [
+//     "death", "clown", "slash"
+// ];
 
 class Game extends Component {
     constructor(props) {
@@ -49,7 +52,16 @@ class Game extends Component {
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' ']
         ],
+        colors: [
+            ['activeTile', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', '']
+        ],
         curRow: 0,
+        curWord: "death",
     };
 
     componentDidMount() {
@@ -67,31 +79,40 @@ class Game extends Component {
     };
 
     onKeyClick = ({ value }) => {
-        console.log(value);
-        const { letters } = this.state;
-        let { curRow } = this.state;
-        if (value === '⏎' || value === 'Enter') {
-            if (!letters[curRow].includes(' ') && curRow < 5) curRow++;
+        const { letters, curWord } = this.state;
+        let { curRow, colors } = this.state;
+        const posChange = letters[curRow].indexOf(' ');
+        if (value !== '⏎' && value !== 'Enter' && value !== '⌫' && value !== 'Backspace' && letters[curRow].includes(' ')) {
+            colors[curRow][posChange + 1] = 'activeTile';
+            colors[curRow][posChange] = '';
         }
-        else if (value === '⌫' || value === 'Backspace') {
-            let posChange;
-            if (letters[curRow].includes(' ')) posChange = letters[curRow].indexOf(' ') - 1;
-            else posChange = 4;
-            letters[curRow][posChange] = ' ';
+        if (value === '⏎' || value === 'Enter') {
+            const word = letters[curRow].join('');
+            if (word.toLocaleLowerCase() === curWord) for (let i = 0; i < 5; i++) colors[curRow][i] = 'rightTile';
+            if (!letters[curRow].includes(' ') && curRow < 5) { curRow++; colors[curRow][0] = 'activeTile'; }
+        }
+        else if ((value === '⌫' || value === 'Backspace')) {
+            if (letters[curRow][0] !== ' ') {
+                let posChange;
+                if (letters[curRow].includes(' ')) posChange = letters[curRow].indexOf(' ') - 1;
+                else posChange = 4;
+                colors[curRow][posChange] = 'activeTile';
+                colors[curRow][posChange + 1] = '';
+                letters[curRow][posChange] = ' ';
+            }
         }
         else {
-            const posChange = letters[curRow].indexOf(' ');
             letters[curRow][posChange] = value;
         }
-        this.setState({ letters: letters, curRow: curRow });
+        this.setState({ letters: letters, curRow: curRow, colors: colors });
     }
 
     render() {
-        const { letters } = this.state;
+        const { letters, colors } = this.state;
         return (
             <div className="wrapper">
                 <Header />
-                <Grid array={letters} />
+                <Grid letters={letters} colors={colors} />
                 <Board onClick={this.onKeyClick} />
             </div>
         );

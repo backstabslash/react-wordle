@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Tile from './tile';
 import './row.css';
 
-function Row({ id, values }) {
+function Row({ id, values, colors }) {
     let i = 0;
     return (
         <div className='row'>
@@ -11,7 +11,8 @@ function Row({ id, values }) {
                 <Tile
                     id={i}
                     value={key}
-                    key={i++}
+                    key={i}
+                    className={colors[i++]}
                 />
             ))}
         </div>
