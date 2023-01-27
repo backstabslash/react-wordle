@@ -82,11 +82,13 @@ class Game extends Component {
         const { letters, curWord } = this.state;
         let { curRow, colors } = this.state;
         const posChange = letters[curRow].indexOf(' ');
-        if (value !== '⏎' && value !== 'Enter' && value !== '⌫' && value !== 'Backspace' && letters[curRow].includes(' ')) {
+        console.log(posChange);
+        if (value !== '⏎' && value !== 'Enter' && value !== '⌫' && value !== 'Backspace' && posChange !== 4 && posChange !== -1) {
             colors[curRow][posChange + 1] = 'activeTile';
             colors[curRow][posChange] = '';
         }
         if (value === '⏎' || value === 'Enter') {
+            if (posChange === -1) colors[curRow][4] = '';
             const word = letters[curRow].join('');
             if (word.toLocaleLowerCase() === curWord) for (let i = 0; i < 5; i++) colors[curRow][i] = 'rightTile';
             if (!letters[curRow].includes(' ') && curRow < 5) { curRow++; colors[curRow][0] = 'activeTile'; }
