@@ -33,9 +33,9 @@ const allowedKeys = [
     "Backspace", "Enter",
 ];
 
-// const wordPool = [
-//     "death", "clown", "slash"
-// ];
+const wordPool = [
+    "death", "clown", "slash"
+];
 
 class Game extends Component {
     constructor(props) {
@@ -61,7 +61,7 @@ class Game extends Component {
             ['', '', '', '', '']
         ],
         curRow: 0,
-        curWord: "kitty",
+        curWord: wordPool[Math.floor(Math.random() * wordPool.length)],
     };
 
     componentDidMount() {
@@ -84,20 +84,24 @@ class Game extends Component {
         let win = false;
         const posChange = letters[curRow].indexOf(' ');
         if (value === '⏎' || value === 'Enter') {
-            if (posChange === -1) colors[curRow][4] = '';
+            const word = letters[curRow].join('').toLocaleLowerCase();
+            if (posChange === -1 && wordPool.includes(word)) colors[curRow][letters[0].length - 1] = '';
             if (!letters[curRow].includes(' ')) {
-                win = this.colorsAccordingToGuess(letters[curRow].join('').toLocaleLowerCase(), curWord, curRow, colors);
-                if (curRow < 5) {
-                    curRow++;
-                    colors[curRow][0] = 'activeTile';
+                if (wordPool.includes(word)) {
+                    win = this.colorsAccordingToGuess(word, curWord, curRow, colors);
+                    if (curRow < 5) {
+                        curRow++;
+                        colors[curRow][0] = 'activeTile';
+                    }
                 }
+                else { alert("try again"); }
             }
         }
         else if ((value === '⌫' || value === 'Backspace')) {
             if (letters[curRow][0] !== ' ') {
                 let posChange;
                 if (letters[curRow].includes(' ')) posChange = letters[curRow].indexOf(' ') - 1;
-                else posChange = 4;
+                else posChange = letters[0].length - 1;
                 colors[curRow][posChange] = 'activeTile';
                 colors[curRow][posChange + 1] = '';
                 letters[curRow][posChange] = ' ';
@@ -137,11 +141,34 @@ class Game extends Component {
     }
 
     onWin() {
-        console.log("congrats Dear friend :)");
+        let { letters, curWord, curRow, colors } = this.state;
+        letters = [
+            [' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' '],
+            [' ', ' ', ' ', ' ', ' ']
+        ];
+        colors = [
+            ['activeTile', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', '']
+        ];
+        curRow = 0;
+        curWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+        this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord });
     }
 
     replaceAt(string, index, replacement) {
         return string.substring(0, index) + replacement + string.substring(index + replacement.length);
+    }
+
+    getRandomInt(max) {
+        return Math.floor(Math.random() * max);
     }
 
     render() {

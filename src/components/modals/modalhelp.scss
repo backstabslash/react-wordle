@@ -39,9 +39,23 @@
     cursor: default;
 }
 
+.headerLookAlike {
+    font-family: "Lora";
+    font-weight: 600;
+    font-size: 20px;
+    color: #8FB996;
+}
+
+.textBlock {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .exampleRow {
     display: flex;
     align-items: flex-start;
+    margin-top: 10px;
     margin-bottom: 5px;
 }
 
@@ -59,7 +73,7 @@
     background-color: #1E3322;
     width: 70%;
     max-width: 500px;
-    max-height: 500px;
+    max-height: 600px;
     padding: 20px 20px 20px 20px;
     border-radius: 10px;
     position: absolute;
