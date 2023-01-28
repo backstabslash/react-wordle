@@ -39,6 +39,12 @@
     cursor: default;
 }
 
+.exampleRow {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
 .overlay {
     position: absolute;
     left: 0;
@@ -53,7 +59,7 @@
     background-color: #1E3322;
     width: 70%;
     max-width: 500px;
-    max-height: 300px;
+    max-height: 500px;
     padding: 20px 20px 20px 20px;
     border-radius: 10px;
     position: absolute;

@@ -61,7 +61,7 @@ class Game extends Component {
             ['', '', '', '', '']
         ],
         curRow: 0,
-        curWord: "death",
+        curWord: "kitty",
     };
 
     componentDidMount() {
@@ -81,17 +81,17 @@ class Game extends Component {
     onKeyClick = ({ value }) => {
         const { letters, curWord } = this.state;
         let { curRow, colors } = this.state;
+        let win = false;
         const posChange = letters[curRow].indexOf(' ');
-        console.log(posChange);
-        if (value !== '⏎' && value !== 'Enter' && value !== '⌫' && value !== 'Backspace' && posChange !== 4 && posChange !== -1) {
-            colors[curRow][posChange + 1] = 'activeTile';
-            colors[curRow][posChange] = '';
-        }
         if (value === '⏎' || value === 'Enter') {
             if (posChange === -1) colors[curRow][4] = '';
-            const word = letters[curRow].join('');
-            if (word.toLocaleLowerCase() === curWord) for (let i = 0; i < 5; i++) colors[curRow][i] = 'rightTile';
-            if (!letters[curRow].includes(' ') && curRow < 5) { curRow++; colors[curRow][0] = 'activeTile'; }
+            if (!letters[curRow].includes(' ')) {
+                win = this.colorsAccordingToGuess(letters[curRow].join('').toLocaleLowerCase(), curWord, curRow, colors);
+                if (curRow < 5) {
+                    curRow++;
+                    colors[curRow][0] = 'activeTile';
+                }
+            }
         }
         else if ((value === '⌫' || value === 'Backspace')) {
             if (letters[curRow][0] !== ' ') {
@@ -104,9 +104,44 @@ class Game extends Component {
             }
         }
         else {
+            if (posChange !== 4 && posChange !== -1) {
+                colors[curRow][posChange + 1] = 'activeTile';
+                colors[curRow][posChange] = '';
+            }
             letters[curRow][posChange] = value;
         }
+        if (win) setTimeout(() => this.onWin(), 100);
         this.setState({ letters: letters, curRow: curRow, colors: colors });
+    }
+
+    colorsAccordingToGuess(guess, curWord, curRow, colors) {
+        let rightGuess = curWord, win = true;
+        for (let i = 0; i < guess.length; i++) {
+            if (rightGuess.includes(guess[i])) {
+                if (rightGuess[i] === guess[i]) {
+                    colors[curRow][i] = 'rightTile';
+                    rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
+                }
+                else {
+                    colors[curRow][i] = 'almostTile';
+                    rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
+                    win = false;
+                }
+            }
+            else {
+                colors[curRow][i] = 'wrongTile';
+                win = false;
+            }
+        }
+        return win;
+    }
+
+    onWin() {
+        console.log("congrats Dear friend :)");
+    }
+
+    replaceAt(string, index, replacement) {
+        return string.substring(0, index) + replacement + string.substring(index + replacement.length);
     }
 
     render() {

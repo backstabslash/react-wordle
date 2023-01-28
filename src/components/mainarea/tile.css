@@ -14,6 +14,13 @@
     font-weight: 600;
     width: 70px;
     height: 70px;
+    user-select: none;
+}
+
+.smallTile {
+    line-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 .wrongTile {
@@ -21,7 +28,8 @@
 }
 
 .almostTile {
-    background-color: yellow;
+    background-color: #F5F5DC;
+    opacity: 0.7;
 }
 
 .rightTile {
