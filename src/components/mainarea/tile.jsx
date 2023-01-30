@@ -18,6 +18,7 @@ function Tile({ id, value, className }) {
 Tile.propTypes = {
     id: PropTypes.number,
     value: PropTypes.string,
+    className: PropTypes.string,
 }
 
 export default Tile;

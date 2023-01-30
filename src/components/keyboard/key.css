@@ -17,6 +17,18 @@
     height: 40px;
 }
 
+.wrongKey {
+    background-color: #0F1A11;
+}
+
+.almostKey {
+    background-color: #ebebb9;
+}
+
+.rightKey {
+    background-color: #1E3322;
+}
+
 .key:hover {
     background-color: #1E3322;
 }

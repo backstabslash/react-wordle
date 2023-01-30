@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Key from './key'
 import './board.css';
 
-function Board({ onClick }) {
+function Board({ onClick, keycolors }) {
+    let i = 0;
     return (
         <div className="board">
             <div className='keyboardArea'>
@@ -12,6 +13,7 @@ function Board({ onClick }) {
                         value={key}
                         key={key}
                         onClick={onClick}
+                        className={keycolors[i++]}
                     />
                 ))}
                 </div>
@@ -20,6 +22,7 @@ function Board({ onClick }) {
                         value={key}
                         key={key}
                         onClick={onClick}
+                        className={keycolors[i++]}
                     />
                 ))}
                 </div>
@@ -28,6 +31,7 @@ function Board({ onClick }) {
                         value={key}
                         key={key}
                         onClick={onClick}
+                        className={keycolors[i++]}
                     />
                 ))}
                 </div>

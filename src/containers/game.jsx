@@ -2,40 +2,7 @@ import React, { Component } from "react";
 import Header from '../components/header/header';
 import Grid from '../components/mainarea/grid';
 import Board from '../components/keyboard/board'
-
-const allowedKeys = [
-    "A", 'a',
-    "B", 'b',
-    "C", 'c',
-    "D", 'd',
-    "E", 'e',
-    "F", 'f',
-    "G", 'g',
-    "H", 'h',
-    "I", 'i',
-    "J", 'j',
-    "K", 'k',
-    "L", 'l',
-    "M", 'm',
-    "N", 'n',
-    "O", 'o',
-    "P", 'p',
-    "Q", 'q',
-    "R", 'r',
-    "S", 's',
-    "T", 't',
-    "U", 'u',
-    "V", 'v',
-    "W", 'w',
-    "X", 'x',
-    "Y", 'y',
-    "Z", 'z',
-    "Backspace", "Enter",
-];
-
-const wordPool = [
-    "death", "clown", "slash"
-];
+import { allowedKeys, wordPool, keyindex } from './consts'
 
 class Game extends Component {
     constructor(props) {
@@ -60,6 +27,14 @@ class Game extends Component {
             ['', '', '', '', ''],
             ['', '', '', '', '']
         ],
+        keycolors: [
+            '', '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '',
+        ],
+        keys: [
+
+        ],
         curRow: 0,
         curWord: wordPool[Math.floor(Math.random() * wordPool.length)],
     };
@@ -80,7 +55,7 @@ class Game extends Component {
 
     onKeyClick = ({ value }) => {
         const { letters, curWord } = this.state;
-        let { curRow, colors } = this.state;
+        let { curRow, colors, keycolors } = this.state;
         let win = false;
         const posChange = letters[curRow].indexOf(' ');
         if (value === '⏎' || value === 'Enter') {
@@ -88,11 +63,9 @@ class Game extends Component {
             if (posChange === -1 && wordPool.includes(word)) colors[curRow][letters[0].length - 1] = '';
             if (!letters[curRow].includes(' ')) {
                 if (wordPool.includes(word)) {
-                    win = this.colorsAccordingToGuess(word, curWord, curRow, colors);
-                    if (curRow < 5) {
-                        curRow++;
-                        colors[curRow][0] = 'activeTile';
-                    }
+                    win = this.colorsAccordingToGuess(word, curWord, curRow, colors, keycolors);
+                    curRow++;
+                    if (curRow < 6) colors[curRow][0] = 'activeTile';
                 }
                 else { alert("try again"); }
             }
@@ -115,18 +88,21 @@ class Game extends Component {
             letters[curRow][posChange] = value;
         }
         if (win) setTimeout(() => this.onWin(), 100);
+        if (curRow === 6 && !win) setTimeout(() => this.onWin(), 100);
         this.setState({ letters: letters, curRow: curRow, colors: colors });
     }
 
-    colorsAccordingToGuess(guess, curWord, curRow, colors) {
+    colorsAccordingToGuess(guess, curWord, curRow, colors, keycolors) {
         let rightGuess = curWord, win = true;
         for (let i = 0; i < guess.length; i++) {
             if (rightGuess.includes(guess[i])) {
                 if (rightGuess[i] === guess[i]) {
+                    keycolors[keyindex.get(guess[i])] = 'rightKey';
                     colors[curRow][i] = 'rightTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                 }
                 else {
+                    keycolors[keyindex.get(guess[i])] = 'almostKey';
                     colors[curRow][i] = 'almostTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                     win = false;
@@ -141,7 +117,7 @@ class Game extends Component {
     }
 
     onWin() {
-        let { letters, curWord, curRow, colors } = this.state;
+        let { letters, curWord, curRow, colors, keycolors } = this.state;
         letters = [
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
@@ -158,9 +134,14 @@ class Game extends Component {
             ['', '', '', '', ''],
             ['', '', '', '', '']
         ];
+        keycolors = [
+            '', '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '',
+        ];
         curRow = 0;
         curWord = wordPool[Math.floor(Math.random() * wordPool.length)];
-        this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord });
+        this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord, keycolors: keycolors });
     }
 
     replaceAt(string, index, replacement) {
@@ -172,12 +153,12 @@ class Game extends Component {
     }
 
     render() {
-        const { letters, colors } = this.state;
+        const { letters, colors, keycolors } = this.state;
         return (
             <div className="wrapper">
                 <Header />
                 <Grid letters={letters} colors={colors} />
-                <Board onClick={this.onKeyClick} />
+                <Board onClick={this.onKeyClick} keycolors={keycolors} />
             </div>
         );
     };
