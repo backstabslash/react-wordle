@@ -194,6 +194,7 @@ const wordPool = [
     'boist', 'asper', 'alula', 'amply', 'bokeh', 'bwana', 'izard',
     'oflag', 'agone', 'brach', 'invar', 'botty', 'brack', 'burry',
     'dozer', 'algol', 'bicep', 'bosch', 'utile', 'agnes', 'atopy',
+    'kotya', 'kitty'
 ];
 
 export { allowedKeys, wordPool, keyindex };
