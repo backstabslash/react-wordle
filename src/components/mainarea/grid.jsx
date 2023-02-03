@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Row from './row';
 import './grid.css';
 
-function Grid({ letters, colors }) {
+function Grid({ letters, colors, rows }) {
     let i = 0;
     return (
         <div className="grid">
@@ -12,6 +12,7 @@ function Grid({ letters, colors }) {
                     <Row
                         id={i}
                         key={i}
+                        rowInvalid={rows[i]}
                         values={letters[i]}
                         colors={colors[i++]}
                     />
@@ -24,6 +25,8 @@ function Grid({ letters, colors }) {
 
 Grid.propTypes = {
     letters: PropTypes.array,
+    colors: PropTypes.array,
+    rowInvalid: PropTypes.array,
 }
 
 export default Grid;

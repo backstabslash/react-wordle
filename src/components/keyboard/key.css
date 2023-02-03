@@ -17,12 +17,11 @@
     height: 40px;
 }
 
-.wrongKey {
-    background-color: #0F1A11;
-}
-
 .almostKey {
-    background-color: #ebebb9;
+    color: #1E3322;
+    background-color: #8FB996;
+    border: 1px solid #1E3322;
+    /* background-color: #ebebb9; */
 }
 
 .rightKey {

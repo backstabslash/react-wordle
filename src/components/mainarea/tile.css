@@ -28,7 +28,10 @@
 }
 
 .almostTile {
-    background-color: #ebebb9;
+    color: #1E3322;
+    background-color: #8FB996;
+    border: 1px solid #1E3322;
+    /* background-color: #ebebb9; */
 }
 
 .rightTile {

@@ -29,7 +29,11 @@
 }
 
 .persDiv {
+    display: flex;
+    align-self: center;
+    transform: translateY(1px);
     width: 50px;
+    height: 25px;
     margin: 0;
     padding: 0;
     text-align: right;
@@ -43,6 +47,10 @@
     margin-right: 10px;
 }
 
+.fa-question:hover {
+    border-bottom: 1px solid #8FB996;
+}
+
 .fa-ellipsis-vertical {
     cursor: pointer;
     font-size: 24px;
@@ -52,6 +60,10 @@
     margin-right: 10px;
 }
 
+.fa-ellipsis-vertical:hover {
+    border-bottom: 1px solid #8FB996;
+}
+
 .fa-chart-bar {
     cursor: pointer;
     font-size: 24px;
@@ -59,4 +71,8 @@
     padding: 0;
     margin: 0;
     margin-right: 5px;
+}
+
+.fa-chart-bar:hover {
+    border-bottom: 1px solid #8FB996;
 }

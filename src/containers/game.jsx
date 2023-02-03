@@ -32,13 +32,12 @@ class Game extends Component {
             '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '',
         ],
-        keys: [
-
+        rowsInvalid: [
+            '', '', '', '', '', '',
         ],
         curRow: 0,
         curWord: wordPool[Math.floor(Math.random() * wordPool.length)],
     };
-
     componentDidMount() {
         document.addEventListener("keydown", this.keyDown, false);
     };
@@ -55,9 +54,10 @@ class Game extends Component {
 
     onKeyClick = ({ value }) => {
         const { letters, curWord } = this.state;
-        let { curRow, colors, keycolors } = this.state;
+        let { curRow, colors, keycolors, rowsInvalid } = this.state;
         let win = false;
         const posChange = letters[curRow].indexOf(' ');
+        if (rowsInvalid[curRow] !== '') rowsInvalid[curRow] = '';
         if (value === '⏎' || value === 'Enter') {
             const word = letters[curRow].join('').toLocaleLowerCase();
             if (posChange === -1 && wordPool.includes(word)) colors[curRow][letters[0].length - 1] = '';
@@ -67,7 +67,7 @@ class Game extends Component {
                     curRow++;
                     if (curRow < 6) colors[curRow][0] = 'activeTile';
                 }
-                else { alert("try again"); }
+                else rowsInvalid[curRow] = 'rowShake';
             }
         }
         else if ((value === '⌫' || value === 'Backspace')) {
@@ -89,7 +89,7 @@ class Game extends Component {
         }
         if (win) setTimeout(() => this.onWin(), 100);
         if (curRow === 6 && !win) setTimeout(() => this.onWin(), 100);
-        this.setState({ letters: letters, curRow: curRow, colors: colors });
+        this.setState({ letters: letters, curRow: curRow, colors: colors, rowsInvalid: rowsInvalid });
     }
 
     colorsAccordingToGuess(guess, curWord, curRow, colors, keycolors) {
@@ -153,11 +153,11 @@ class Game extends Component {
     }
 
     render() {
-        const { letters, colors, keycolors } = this.state;
+        const { letters, colors, keycolors, rowsInvalid } = this.state;
         return (
             <div className="wrapper">
                 <Header />
-                <Grid letters={letters} colors={colors} />
+                <Grid letters={letters} colors={colors} rows={rowsInvalid} />
                 <Board onClick={this.onKeyClick} keycolors={keycolors} />
             </div>
         );

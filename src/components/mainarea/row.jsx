@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Tile from './tile';
 import './row.css';
 
-function Row({ id, values, colors }) {
+function Row({ id, values, colors, rowInvalid }) {
     let i = 0;
     return (
-        <div className='row'>
+        <div className={`row ${rowInvalid}`}>
             {[...values].map((key) => (
                 <Tile
                     id={i}
