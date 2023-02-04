@@ -31,7 +31,6 @@
 .persDiv {
     display: flex;
     align-self: center;
-    transform: translateY(1px);
     width: 50px;
     height: 25px;
     margin: 0;

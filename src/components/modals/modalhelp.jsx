@@ -1,14 +1,15 @@
 import React from 'react';
-import './modalhelp.scss';
+import './modalhelp.css';
+import './modal.scss'
 import Tile from '../mainarea/tile'
 
-const ModalHelp = ({ open, setOpen }) => (
-    <div className={`overlay animated ${open ? 'show' : ''}`} onClick={() => setOpen(false)}>
+const ModalHelp = ({ openHelp, setOpenHelp }) => (
+    <div className={`overlay animated ${openHelp ? 'show' : ''}`} onClick={() => setOpenHelp(false)}>
         <div className="modal" onClick={e => e.stopPropagation()} >
             <div className='headWrapper'>
                 <div className='headerTDiv'>how to play</div>
                 <div className='headerIDiv'>
-                    <i className="fa fa-times" aria-hidden="true" onClick={() => setOpen(false)}></i>
+                    <i className="fa fa-times" aria-hidden="true" onClick={() => setOpenHelp(false)}></i>
                 </div>
             </div>
             <span className='helpSpan'><span className='textBlock' style={{ marginTop: 10 }}>guess the hidden word in 6 tries.</span>

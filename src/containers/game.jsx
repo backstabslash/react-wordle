@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Header from '../components/header/header';
 import Grid from '../components/mainarea/grid';
 import Board from '../components/keyboard/board'
-import { allowedKeys, wordPool, keyindex } from './consts'
+import { ALLOWED_KEYS, KEY_INDEX, WORD_POOL, WORD_POOL_LENGTH, MAX_ROWS, MAX_TILES } from './consts'
 
 class Game extends Component {
     constructor(props) {
@@ -36,8 +36,9 @@ class Game extends Component {
             '', '', '', '', '', ''
         ],
         curRow: 0,
-        curWord: wordPool[Math.floor(Math.random() * wordPool.length)],
+        curWord: WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
     };
+
     componentDidMount() {
         document.addEventListener("keydown", this.keyDown, false);
     };
@@ -48,7 +49,7 @@ class Game extends Component {
 
     keyDown(event) {
         let value = event.key;
-        if (allowedKeys.includes(value))
+        if (ALLOWED_KEYS.includes(value))
             this.onKeyClick({ value });
     };
 
@@ -58,15 +59,13 @@ class Game extends Component {
 
     setTilesLetters(value) {
         let { letters, curRow } = this.state, posChange = letters[curRow].indexOf(' ');
-
         this.setInvalidRowAnimation('') // clear shake animation if it was present
-
         if (value === '⏎' || value === 'Enter') { // handling enter key
             const guess = letters[curRow].join('').toLocaleLowerCase();
-            if (wordPool.includes(guess)) {
+            if (WORD_POOL.includes(guess)) {
                 this.setActiveTile(curRow, (letters[0].length - 1), '');
                 this.setColorsAccordingToGuess(guess);
-                if (++curRow < 6)
+                if (++curRow < MAX_ROWS)
                     this.setActiveTile(curRow, 0, 'activeTile');
             }
             else this.setInvalidRowAnimation('rowShake'); // shake cause not in word pool
@@ -83,14 +82,14 @@ class Game extends Component {
             }
         }
         else { // handling any key thats allowed except for enter and backspace
-            if (posChange !== 4 && posChange !== -1) {
+            if (posChange >= 0 && posChange < MAX_TILES) {
                 this.setActiveTile(curRow, posChange + 1, 'activeTile');
                 this.setActiveTile(curRow, posChange, '');
             }
             letters[curRow][posChange] = value;
         }
         this.setState({ letters: letters, curRow: curRow })
-        if (curRow >= 6)
+        if (curRow >= MAX_ROWS)
             setTimeout(() => this.refresh(), 500); // lose reset
     }
 
@@ -111,12 +110,12 @@ class Game extends Component {
         for (let i = 0; i < guess.length; i++) {
             if (rightGuess.includes(guess[i])) {
                 if (rightGuess[i] === guess[i]) {
-                    keycolors[keyindex.get(guess[i])] = 'rightKey';
+                    keycolors[KEY_INDEX.get(guess[i])] = 'rightKey';
                     colors[curRow][i] = 'rightTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                 }
                 else {
-                    keycolors[keyindex.get(guess[i])] = 'almostKey';
+                    keycolors[KEY_INDEX.get(guess[i])] = 'almostKey';
                     colors[curRow][i] = 'almostTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                     win = false;
@@ -140,22 +139,18 @@ class Game extends Component {
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' ']
-        ],
-            colors = [
-                ['activeTile', '', '', '', ''],
-                ['', '', '', '', ''],
-                ['', '', '', '', ''],
-                ['', '', '', '', ''],
-                ['', '', '', '', ''],
-                ['', '', '', '', '']
-            ],
-            keycolors = [
-                '', '', '', '', '', '', '', '', '', '',
-                '', '', '', '', '', '', '', '', '',
-                '', '', '', '', '', '', ''
-            ],
-            curRow = 0,
-            curWord = wordPool[Math.floor(Math.random() * wordPool.length)];
+        ], colors = [
+            ['activeTile', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', '']
+        ], keycolors = [
+            '', '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', '', '', '',
+            '', '', '', '', '', '', ''
+        ], curRow = 0, curWord = WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)];
         console.log(curWord);
         this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord, keycolors: keycolors });
     }
