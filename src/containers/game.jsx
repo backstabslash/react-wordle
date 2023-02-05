@@ -8,6 +8,7 @@ class Game extends Component {
     constructor(props) {
         super(props);
         this.keyDown = this.keyDown.bind(this);
+        this.onChangeMode = this.onChangeMode.bind(this);
     }
 
     state = {
@@ -37,6 +38,7 @@ class Game extends Component {
         ],
         curRow: 0,
         curWord: WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
+        hardMode: false,
     };
 
     componentDidMount() {
@@ -61,14 +63,43 @@ class Game extends Component {
         let { letters, curRow } = this.state, posChange = letters[curRow].indexOf(' ');
         this.setInvalidRowAnimation('') // clear shake animation if it was present
         if (value === '⏎' || value === 'Enter') { // handling enter key
-            const guess = letters[curRow].join('').toLocaleLowerCase();
-            if (WORD_POOL.includes(guess)) {
-                this.setActiveTile(curRow, (letters[0].length - 1), '');
-                this.setColorsAccordingToGuess(guess);
-                if (++curRow < MAX_ROWS)
-                    this.setActiveTile(curRow, 0, 'activeTile');
+            const guess = letters[curRow].join('').toLocaleLowerCase(), { hardMode } = this.state;
+            if (!hardMode || curRow === 0) { // default
+                if (WORD_POOL.includes(guess)) {
+                    this.setActiveTile(curRow, (letters[0].length - 1), '');
+                    this.setColorsAccordingToGuess(guess);
+                    if (++curRow < MAX_ROWS)
+                        this.setActiveTile(curRow, 0, 'activeTile');
+                }
+                else this.setInvalidRowAnimation('rowShake'); // shake cause not in word pool
             }
-            else this.setInvalidRowAnimation('rowShake'); // shake cause not in word pool
+            else { // hardmode on
+                const { colors } = this.state;
+                let meetsReqs = true, chGuess = guess;
+                for (let i = 0; i < colors[curRow - 1].length; i++) {
+                    if (colors[curRow - 1][i] === 'rightTile') {
+                        if (chGuess[i] !== letters[curRow - 1][i]) {
+                            meetsReqs = false;
+                            break;
+                        }
+                        else chGuess = this.replaceAt(chGuess, i, '1');
+                    }
+                    else if (colors[curRow - 1][i] === 'almostTile') {
+                        if (!chGuess.includes(letters[curRow - 1][i])) {
+                            meetsReqs = false;
+                            break;
+                        }
+                        else chGuess = this.replaceAt(chGuess, chGuess.indexOf(letters[curRow - 1][i]), '1');
+                    }
+                }
+                if (WORD_POOL.includes(guess) && meetsReqs) {
+                    this.setActiveTile(curRow, (letters[0].length - 1), '');
+                    this.setColorsAccordingToGuess(guess);
+                    if (++curRow < MAX_ROWS)
+                        this.setActiveTile(curRow, 0, 'activeTile');
+                }
+                else this.setInvalidRowAnimation('rowShake'); // shake cause guess doesnt meet the reqs
+            }
         }
         else if ((value === '⌫' || value === 'Backspace')) { // handling backspace key
             if (letters[curRow][0] !== ' ') {
@@ -159,11 +190,15 @@ class Game extends Component {
         return string.substring(0, index) + replacement + string.substring(index + replacement.length);
     }
 
+    onChangeMode(hardmode) {
+        this.setState({ hardMode: hardmode });
+    }
+
     render() {
         const { letters, colors, keycolors, invalidRowShake } = this.state;
         return (
             <div className="wrapper">
-                <Header />
+                <Header onChangeMode={this.onChangeMode} />
                 <Grid letters={letters} colors={colors} rows={invalidRowShake} />
                 <Board onClick={this.onKeyClick} keycolors={keycolors} />
             </div>

@@ -25,3 +25,10 @@
     margin-top: 10px;
     margin-bottom: 5px;
 }
+
+.text {
+    font-family: "Lora";
+    font-weight: 600;
+    font-size: 20px;
+    color: #8FB996;
+}
