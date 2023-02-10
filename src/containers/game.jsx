@@ -3,6 +3,7 @@ import Header from '../components/header/header';
 import Grid from '../components/mainarea/grid';
 import Board from '../components/keyboard/board'
 import { ALLOWED_KEYS, KEY_INDEX, WORD_POOL, WORD_POOL_LENGTH, MAX_ROWS, MAX_TILES } from './consts'
+import { localletters, row, localcolors, word, localkeyColors } from './localStorage'
 
 class Game extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Game extends Component {
     }
 
     state = {
-        letters: [
+        letters: localletters || [
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
@@ -20,7 +21,7 @@ class Game extends Component {
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' ']
         ],
-        colors: [
+        colors: localcolors || [
             ['activeTile', '', '', '', ''],
             ['', '', '', '', ''],
             ['', '', '', '', ''],
@@ -28,21 +29,23 @@ class Game extends Component {
             ['', '', '', '', ''],
             ['', '', '', '', '']
         ],
-        keycolors: [
+        keyColors: localkeyColors || [
             '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', ''
         ],
-        invalidRowShake: [
+        rowAnimations: [
             '', '', '', '', '', ''
         ],
-        curRow: 0,
-        curWord: WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
-        hardMode: false,
+        curRow: parseInt(row) || 0,
+        curWord: word || WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
     };
 
     componentDidMount() {
         document.addEventListener("keydown", this.keyDown, false);
+        if (!(localStorage.getItem("goodGames"))) localStorage.setItem("goodGames", 0);
+        if (!(localStorage.getItem("totalGames"))) localStorage.setItem("totalGames", 0);
+        if (!(localStorage.getItem("totalGuesses"))) localStorage.setItem("totalGuesses", 0);
     };
 
     componentWillUnmount() {
@@ -62,12 +65,15 @@ class Game extends Component {
     setTilesLetters(value) {
         let { letters, curRow } = this.state, posChange = letters[curRow].indexOf(' ');
         this.setInvalidRowAnimation('') // clear shake animation if it was present
+        this.setBounceRowAnimation('');// clear bounce animation if it was present
         if (value === '⏎' || value === 'Enter') { // handling enter key
-            const guess = letters[curRow].join('').toLocaleLowerCase(), { hardMode } = this.state;
-            if (!hardMode || curRow === 0) { // default
+            const guess = letters[curRow].join('').toLocaleLowerCase(), hardMode = localStorage.getItem("hardmode") || false;
+            console.log(curRow);
+            if (hardMode === 'false' || curRow === 0) { // default
                 if (WORD_POOL.includes(guess)) {
                     this.setActiveTile(curRow, (letters[0].length - 1), '');
                     this.setColorsAccordingToGuess(guess);
+                    this.setBounceRowAnimation('bounceAnimation');
                     if (++curRow < MAX_ROWS)
                         this.setActiveTile(curRow, 0, 'activeTile');
                 }
@@ -95,6 +101,7 @@ class Game extends Component {
                 if (WORD_POOL.includes(guess) && meetsReqs) {
                     this.setActiveTile(curRow, (letters[0].length - 1), '');
                     this.setColorsAccordingToGuess(guess);
+                    this.setBounceRowAnimation('bounceAnimation');
                     if (++curRow < MAX_ROWS)
                         this.setActiveTile(curRow, 0, 'activeTile');
                 }
@@ -126,27 +133,33 @@ class Game extends Component {
 
     setActiveTile(curRow, posChange, value) { // setting and removing glow on current tile
         let { colors } = this.state;
-        colors[curRow][posChange] = value;
+        if (posChange < 5) colors[curRow][posChange] = value;
         this.setState({ colors: colors });
     }
 
     setInvalidRowAnimation(value) { // setting and removing shake animation
-        let { invalidRowShake, curRow } = this.state;
-        invalidRowShake[curRow] = value;
-        this.setState({ invalidRowShake: invalidRowShake });
+        let { rowAnimations, curRow } = this.state;
+        rowAnimations[curRow] = value;
+        this.setState({ rowAnimations: rowAnimations });
+    }
+
+    setBounceRowAnimation(value) { // setting and removing bounce animation
+        let { rowAnimations, curRow } = this.state;
+        rowAnimations[curRow] = value;
+        this.setState({ rowAnimations: rowAnimations });
     }
 
     setColorsAccordingToGuess(guess) {
-        let { colors, keycolors, curWord, curRow } = this.state, rightGuess = curWord, win = true;
+        let { colors, keyColors, curWord, curRow } = this.state, rightGuess = curWord, win = true;
         for (let i = 0; i < guess.length; i++) {
             if (rightGuess.includes(guess[i])) {
                 if (rightGuess[i] === guess[i]) {
-                    keycolors[KEY_INDEX.get(guess[i])] = 'rightKey';
+                    keyColors[KEY_INDEX.get(guess[i])] = 'rightKey';
                     colors[curRow][i] = 'rightTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                 }
                 else {
-                    keycolors[KEY_INDEX.get(guess[i])] = 'almostKey';
+                    keyColors[KEY_INDEX.get(guess[i])] = 'almostKey';
                     colors[curRow][i] = 'almostTile';
                     rightGuess = this.replaceAt(rightGuess, rightGuess.indexOf(guess[i]), '1');
                     win = false;
@@ -157,12 +170,17 @@ class Game extends Component {
                 win = false;
             }
         }
-        this.setState({ colors: colors, keycolors: keycolors });
-        if (win)
+        this.setState({ colors: colors, keyColors: keyColors });
+        if (win) {
             setTimeout(() => this.refresh(), 500); // win reset
+            localStorage.setItem("goodGames", parseInt(localStorage.getItem("goodGames")) + 1);
+        }
     }
 
     refresh() {
+        localStorage.setItem("totalGames", parseInt(localStorage.getItem("totalGames")) + 1);
+        let { curRow } = this.state;
+        localStorage.setItem("totalGuesses", parseInt(localStorage.getItem("totalGuesses")) + curRow);
         let letters = [
             [' ', ' ', ' ', ' ', ' '],
             [' ', ' ', ' ', ' ', ' '],
@@ -177,13 +195,12 @@ class Game extends Component {
             ['', '', '', '', ''],
             ['', '', '', '', ''],
             ['', '', '', '', '']
-        ], keycolors = [
+        ], keyColors = [
             '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', ''
-        ], curRow = 0, curWord = WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)];
-        console.log(curWord);
-        this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord, keycolors: keycolors });
+        ], curWord = WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)]; curRow = 0;
+        this.setState({ letters: letters, curRow: curRow, colors: colors, curWord: curWord, keyColors: keyColors });
     }
 
     replaceAt(string, index, replacement) {
@@ -191,16 +208,21 @@ class Game extends Component {
     }
 
     onChangeMode(hardmode) {
-        this.setState({ hardMode: hardmode });
+        localStorage.setItem("hardmode", hardmode);
     }
 
     render() {
-        const { letters, colors, keycolors, invalidRowShake } = this.state;
+        const { letters, colors, keyColors, rowAnimations, curWord, curRow } = this.state;
+        localStorage.setItem("letters", letters);
+        localStorage.setItem("colors", colors);
+        localStorage.setItem("keyColors", keyColors);
+        localStorage.setItem("curRow", curRow);
+        localStorage.setItem("notCurWord", curWord);
         return (
             <div className="wrapper">
                 <Header onChangeMode={this.onChangeMode} />
-                <Grid letters={letters} colors={colors} rows={invalidRowShake} />
-                <Board onClick={this.onKeyClick} keycolors={keycolors} />
+                <Grid letters={letters} colors={colors} rows={rowAnimations} />
+                <Board onClick={this.onKeyClick} keycolors={keyColors} />
             </div>
         );
     };

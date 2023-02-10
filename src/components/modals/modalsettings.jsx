@@ -7,6 +7,9 @@ function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
     const handleChange = (e) => {
         onChangeMode(e.target.checked);
     }
+    let hardmode = localStorage.getItem("hardmode") || false;
+    if (hardmode === 'false') hardmode = false;
+    else hardmode = true;
     return (
         <div className={`overlay animated ${openSettings ? 'show' : ''}`} onClick={() => setOpenSettings(false)}>
             <div className="modal" onClick={e => e.stopPropagation()} >
@@ -19,7 +22,7 @@ function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
                 <span className='textBlock'> <span className='text'>hard mode
                     <span className='minitext'><br></br>(any revealed hints must be used in subsequent guesses)</span></span>
                     <label className="switch">
-                        <input type="checkbox" onChange={handleChange} />
+                        <input type="checkbox" onClick={handleChange} defaultChecked={hardmode} />
                         <span className="slider"></span>
                     </label>
                 </span>
