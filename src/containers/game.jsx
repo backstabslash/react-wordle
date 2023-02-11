@@ -68,7 +68,6 @@ class Game extends Component {
         this.setBounceRowAnimation('');// clear bounce animation if it was present
         if (value === '⏎' || value === 'Enter') { // handling enter key
             const guess = letters[curRow].join('').toLocaleLowerCase(), hardMode = localStorage.getItem("hardmode") || false;
-            console.log(curRow);
             if (hardMode === 'false' || curRow === 0) { // default
                 if (WORD_POOL.includes(guess)) {
                     this.setActiveTile(curRow, (letters[0].length - 1), '');
@@ -128,7 +127,7 @@ class Game extends Component {
         }
         this.setState({ letters: letters, curRow: curRow })
         if (curRow >= MAX_ROWS)
-            setTimeout(() => this.refresh(), 500); // lose reset
+            setTimeout(() => this.refresh(), 700); // lose reset
     }
 
     setActiveTile(curRow, posChange, value) { // setting and removing glow on current tile
@@ -172,7 +171,7 @@ class Game extends Component {
         }
         this.setState({ colors: colors, keyColors: keyColors });
         if (win) {
-            setTimeout(() => this.refresh(), 500); // win reset
+            setTimeout(() => this.refresh(), 700); // win reset
             localStorage.setItem("goodGames", parseInt(localStorage.getItem("goodGames")) + 1);
         }
     }
@@ -208,7 +207,8 @@ class Game extends Component {
     }
 
     onChangeMode(hardmode) {
-        localStorage.setItem("hardmode", hardmode);
+        const { curRow } = this.state;
+        if (curRow === 0) localStorage.setItem("hardmode", hardmode);
     }
 
     render() {

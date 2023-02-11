@@ -5,7 +5,8 @@ import './modalsettings.css';
 
 function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
     const handleChange = (e) => {
-        onChangeMode(e.target.checked);
+        if (parseInt(localStorage.getItem("curRow")) !== 0) e.preventDefault();
+        else onChangeMode(e.target.checked);
     }
     let hardmode = localStorage.getItem("hardmode") || false;
     if (hardmode === 'false') hardmode = false;
