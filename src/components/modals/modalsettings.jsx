@@ -29,7 +29,7 @@ function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
             ></i>
           </div>
         </div>
-        <div className="textBlock">
+        <div className="textBlockSettings">
           {" "}
           <span className="text">
             hard mode

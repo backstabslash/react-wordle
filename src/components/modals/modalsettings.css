@@ -38,10 +38,12 @@ input:checked + .slider::before {
   transform: translateX(25px);
 }
 
-.textBlock {
+.textBlockSettings {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .text {
