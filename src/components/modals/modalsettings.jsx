@@ -29,7 +29,7 @@ function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
             ></i>
           </div>
         </div>
-        <span className="textBlock">
+        <div className="textBlock">
           {" "}
           <span className="text">
             hard mode
@@ -45,7 +45,7 @@ function ModalSettings({ openSettings, setOpenSettings, onChangeMode }) {
             />
             <span className="slider"></span>
           </label>
-        </span>
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,13 @@
 .keyboardArea {
-    margin: 0 auto;
-    margin-top: 20px;
-    min-width: 250px;
-    max-width: 400px;
-    min-height: 150px;
-    max-height: 175px;
+  margin: 0 auto;
+  margin-top: 20px;
+  min-width: 250px;
+  max-width: 400px;
+  min-height: 150px;
+  max-height: 175px;
 }
 
 .board {
-    margin: 0 auto;
-    padding: 0 10px 10px 10px;
+  margin: 0 auto;
+  padding: 0 10px 10px 10px;
 }

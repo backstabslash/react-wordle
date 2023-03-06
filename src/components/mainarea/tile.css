@@ -1,42 +1,42 @@
 .tile {
-    border: 1px solid #8FB996;
-    border-radius: 5%;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    cursor: default;
-    line-height: 70px;
-    text-transform: uppercase;
-    margin: 0 5px 0 0;
-    font-family: "Lora";
-    font-size: 24px;
-    color: #8FB996;
-    font-weight: 600;
-    width: 70px;
-    height: 70px;
-    user-select: none;
+  border: 1px solid #8fb996;
+  border-radius: 5%;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  cursor: default;
+  line-height: 70px;
+  text-transform: uppercase;
+  margin: 0 5px 0 0;
+  font-family: "Lora";
+  font-size: 24px;
+  color: #8fb996;
+  font-weight: 600;
+  width: 70px;
+  height: 70px;
+  user-select: none;
 }
 
 .smallTile {
-    line-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
+  line-height: 30px;
+  max-width: 30px;
+  max-height: 30px;
 }
 
 .wrongTile {
-    background-color: #0F1A11;
+  background-color: #0f1a11;
 }
 
 .almostTile {
-    color: #1E3322;
-    background-color: #8FB996;
-    border: 1px solid #1E3322;
+  color: #1e3322;
+  background-color: #8fb996;
+  border: 1px solid #1e3322;
 }
 
 .rightTile {
-    background-color: #1E3322;
+  background-color: #1e3322;
 }
 
 .activeTile {
-    box-shadow: 0 0 8px 0px #8FB996;
+  box-shadow: 0 0 8px 0px #8fb996;
 }

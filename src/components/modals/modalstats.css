@@ -1,37 +1,37 @@
 .stats {
-    display: flex;
+  display: flex;
 }
 
 .statContainer {
-    flex: 1;
-    font-family: "Lora";
-    color: #8FB996;
-    font-weight: 400;
-    user-select: none;
+  flex: 1;
+  font-family: "Lora";
+  color: #8fb996;
+  font-weight: 400;
+  user-select: none;
 }
 
 .statProp {
-    font-size: 36px;
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    letter-spacing: 0.05em;
+  font-size: 36px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 0.05em;
 }
 
 .statLabel {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding-bottom: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 5px;
 }
 
 .footWrapper {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-top: 5px;
-    border-top: 1px solid #8FB996;
+  display: flex;
+  flex-wrap: nowrap;
+  padding-top: 5px;
+  border-top: 1px solid #8fb996;
 }
