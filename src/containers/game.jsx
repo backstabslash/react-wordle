@@ -72,7 +72,7 @@ class Game extends Component {
     ],
     rowAnimations: ["", "", "", "", "", ""],
     curRow: parseInt(row) || 0,
-    curWord: "flags", //word || WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
+    curWord: word || WORD_POOL[Math.floor(Math.random() * WORD_POOL_LENGTH)],
   };
 
   componentDidMount() {
