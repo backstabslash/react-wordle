@@ -95,7 +95,10 @@ class Game extends Component {
   }
 
   onKeyClick = ({ value }) => {
-    this.setTilesLetters(value);
+    console.log(value);
+    if (value !== "Backspace" && value !== "Enter")
+      this.setTilesLetters(value.toLocaleLowerCase());
+    else this.setTilesLetters(value);
   };
 
   setTilesLetters(value) {
